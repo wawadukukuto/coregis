@@ -1,0 +1,32 @@
+npm…Node.jsのパッケージ管理ツール
+
+起動
+npm run dev
+
+プロジェクト作成(最新版で)
+npm create vite@latest
+
+・基本はsrcフォルダのみをいじる
+・.tsはデータの型を定義→.jsonで活用
+・.tsと.jsonはApp.tsxで結びつける
+
+表
+<ul>
+    {courses.map((course) => (<li key = {course.id}>{course.name}</li>))}
+</ul>
+
+componentsの各役割
+Timetable.tsx：時間割全体。曜日×時限のマスを並べて、登録済みの授業をカードとして配置する。マスがクリックされたら「どのマスか」を親に伝える
+CourseCard.tsx：マスの中の授業カード1枚。教室名（青い帯）・授業名・教員名・休/補バッジ・！マークを表示するだけ
+Popup.tsx（わづ担当）：マスをクリックすると出る詳細パネル。授業名・評価項目・概要と、その時限の候補授業を表示。×ボタンか外側タップで閉じる。月火水なら右、木金土なら左に出る
+AutoFillForm.tsx（2〜3枚目のスライド）：条件指定で自動入力する画面。入れない曜日・時限、優先コース、評価基準を選んで自動で時間割を埋める
+
+import type {Course} from './types';
+↑型はみんな持っている必要がある
+
+import coursesData from './data/courses.json';
+↑jsonは親(App.tsx)が持ち子に継承する
+
+{courses.map((course) => (<li key = {course.id}>{course.name}</li>))}
+    →{courses.map((course) => (<CourseCard key={course.id} course={course} />))}
+cardの方に<li>{course.name}</li>で代替できる
