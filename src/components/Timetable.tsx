@@ -15,6 +15,8 @@ function Timetable() {
   const [selected, setSelected] = useState<string | null>(null); // マスが押されているかを記憶
   //↑setSelectedがselctedの中身を変更する関数的役割
 
+  const [registered, setRegistered] = useState<Course[]>([]); //登録された授業を入れる
+
   const [selDay, selPeriod] = selected?.split("-") ?? [];
   const col = days.indexOf(selDay); // 何列目か（月=0〜土=5、見つからなければ-1）(days配列の何番目にあるかを見ている)
   const row = Number(selPeriod) - 1; // 何行目か（1限=0）
@@ -26,6 +28,28 @@ function Timetable() {
     : courses.filter((c) => c.dWeekId === col + 1 && c.time === row + 1);
 
   const popupPos = isIntensive ? "bottom" : col < 3 ? "right" : "left";
+
+  // 登録・削除の関数
+  function toggleCourse(c: Course) {
+    const isRegistered = registered.some((r) => r.id === c.id);
+
+    if (isRegistered) {
+      // 登録済みなら外す
+      setRegistered(registered.filter((r) => r.id !== c.id));
+    } else if (isIntensive) {
+      // 集中はそのまま追加（複数OK）
+      setRegistered([...registered, c]);
+    } else {
+      // 普通のマスは、同じコマの授業を外してから追加（1コマ1つ）
+      setRegistered([
+        ...registered.filter(
+          (r) => !(r.dWeekId === c.dWeekId && r.time === c.time),
+        ),
+        c,
+      ]);
+    }
+  }
+
   return (
     <div className="timetable">
       {/*背景*/}
@@ -44,7 +68,12 @@ function Timetable() {
           </p>
           <ul className="candidates">
             {candidates.map((c) => (
-              <CourseCard key={c.id} course={c} />
+              <li key={c.id} className="candidate">
+                <CourseCard course={c} />
+                <button onClick={() => toggleCourse(c)}>
+                  {registered.some((r) => r.id === c.id) ? "外" : "入"}
+                </button>
+              </li>
             ))}
           </ul>
         </div>
@@ -58,14 +87,17 @@ function Timetable() {
             const key = `${day}-${period}`;
             // keyとselectedが同じか調べてその結果をisOpenに入れる
             const isOpen = selected === key;
+            //条件に合うもの
+            const course = registered.find(
+              (r) => r.dWeekId === i + 1 && r.time === period,
+            );
             return (
               <div
                 key={key}
                 className={`cell ${isOpen ? "active" : ""}`}
                 onClick={() => setSelected(key)}
               >
-                {day}
-                {period}
+                {course && <CourseCard course={course} />}
               </div>
             );
           })}
@@ -77,7 +109,13 @@ function Timetable() {
         <div
           className={`cell intensive-cell ${selected === "集中" ? "active" : ""}`}
           onClick={() => setSelected("集中")}
-        ></div>
+        >
+          {registered
+            .filter((r) => r.dWeekId === null)
+            .map((r) => (
+              <CourseCard key={r.id} course={r} />
+            ))}
+        </div>
       </div>
     </div>
   );

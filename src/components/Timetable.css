@@ -22,7 +22,8 @@
   border: 2px solid #10318f;
   padding: 16px;
   background: #fff;
-  overflow-y: auto;
+  display: flex;
+  flex-direction:column;
 }
 
 .popup.right {
@@ -68,6 +69,11 @@
   margin-top: 12px;
 }
 
+.intensive-cell {
+  height: auto;
+  min-height: 80px;
+}
+
 .timetable {
   position: relative;
 }
@@ -80,4 +86,25 @@
   top: 100%;
   left: 24px;
   border-top-color: #10318f;
+}
+
+.candidates {
+  list-style: none;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.candidate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.course-eval {
+  font-size: 11px;
+  color: #777;
+  margin-top: 2px;
 }
