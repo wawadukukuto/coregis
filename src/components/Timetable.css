@@ -6,28 +6,78 @@
 .cell {
   height: 80px;
   border: 1px solid #ddd;
+  /* pupupを出すときの基準にするため */
+  position:relative;
 }
 
 .popup {
+  position: absolute;
+  top: 0;
+  /* マス５個分 */
+  height: calc(82px * 5);
+  /* マス２個分 */
+  width: calc((100% - 60px) / 6 * 2);
+  box-sizing: border-box;
+  z-index: 20;
   border: 2px solid #10318f;
   padding: 16px;
   background: #fff;
-  position: fixed;
-  top: 100px;
-  left: 50%;
+  overflow-y: auto;
 }
 
 .popup.right {
-  left: 50%;
-  right: 16px;
+  left: calc(60px + (var(--col) + 1) * (100% - 60px) / 6 + 12px);
 }
+
 .popup.left {
-  right: 50%;
-  left: 16px;
+  left: calc(60px + (var(--col) - 2) * (100% - 60px) / 6 - 12px);
+}
+
+.popup::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--row) * 82px + 24px);
+  border: 10px solid transparent;
+}
+
+.popup.right::before {
+  right: 100%;
+  border-right-color: #10318f;
+}
+
+.popup.left::before {
+  left: 100%;
+  border-left-color: #10318f;
 }
 
 .backdrop {
   position: fixed; /*位置を固定*/
   inset: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.1); /*背景色になる*/
+  z-index:10;
+}
+
+.cell.active {
+  background: #e6eeff;
+  outline: 2px solid #10318f;
+}
+
+.intensive {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  margin-top: 12px;
+}
+
+.timetable {
+  position: relative;
+}
+
+.popup.bottom {
+  left: calc(60px + (100% - 60px) / 6);
+}
+
+.popup.bottom::before {
+  top: 100%;
+  left: 24px;
+  border-top-color: #10318f;
 }
