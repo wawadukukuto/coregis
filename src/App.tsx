@@ -1,5 +1,5 @@
-import coursesData from './data/courses.json';
-import type {Course} from './types';
+//import coursesData from './data/courses.json';
+// import type {Course} from './types';
 // import CourseCard from './components/CourseCard'
 import Timetable from './components/Timetable';
 
