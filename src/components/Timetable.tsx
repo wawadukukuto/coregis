@@ -37,7 +37,6 @@ function Timetable() {
 
   const popupPos = isIntensive ? "bottom" : col < 3 ? "right" : "left";
 
-
   // 登録・削除の関数
   function toggleCourse(c: Course) {
     const isRegistered = registered.some((r) => r.id === c.id);
@@ -57,6 +56,40 @@ function Timetable() {
         c,
       ]);
     }
+  }
+
+  // ランダム機能
+  function randomize() {
+    // ①候補を集める（外国語設定に従う）
+    const pool = courses.filter(
+      (c) => showForeign || !c.element.includes("外国語"),
+    );
+
+    // ②シャッフル
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+
+    // ③上から順に入れられるものを入れる
+    const result: Course[] = [];
+    for (const c of shuffled) {
+      if (result.length >= 12) break; // 12個になったら終わり
+
+      if (c.dWeekId === null) {
+        // 集中：3個まで
+        const intensiveCount = result.filter((r) => r.dWeekId === null).length;
+        if (intensiveCount >= 3) continue;
+      } else {
+        // 普通のマス：同じコマが埋まっていたらスキップ
+        const taken = result.some(
+          (r) => r.dWeekId === c.dWeekId && r.time === c.time,
+        );
+        if (taken) continue;
+      }
+
+      result.push(c);
+    }
+
+    // ④まとめて登録
+    setRegistered(result);
   }
 
   return (
@@ -82,6 +115,8 @@ function Timetable() {
           />
           非表示
         </label>
+
+        <button onClick={randomize}>ランダム</button>
       </div>
       <div className="timetable">
         {/*背景*/}

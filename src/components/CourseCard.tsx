@@ -8,7 +8,7 @@ function CourseCard({ course }: Props) {
   return (
     <div className="course-card">
       {course.name}
-      <div className="course-eval">{course.evaluation.join(" / ")}</div>
+      {/* s<div className="course-eval">{course.evaluation.join(" / ")}</div> */}
     </div>
   );
 }
