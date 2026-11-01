@@ -8,6 +8,7 @@ function CourseCard({ course }: Props) {
   return (
     <div className="course-card">
       {course.name}
+      {/* 必要か悩みどころ */}
       {/* s<div className="course-eval">{course.evaluation.join(" / ")}</div> */}
     </div>
   );

@@ -1,9 +1,9 @@
 import coursesData from './data/courses.json';
 import type {Course} from './types';
-import CourseCard from './components/CourseCard'
+// import CourseCard from './components/CourseCard'
 import Timetable from './components/Timetable';
 
-const courses: Course[] = coursesData;//courseDataをCourse型としてcoursesに入れる
+//const courses: Course[] = coursesData;//courseDataをCourse型としてcoursesに入れる
 
 function App() {
   return(
