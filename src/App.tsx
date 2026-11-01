@@ -8,7 +8,7 @@ import Timetable from './components/Timetable';
 function App() {
   return(
     <div>
-      <h1>時間割</h1>
+      <h1>自分だけの時間割を作ろう！</h1>
         <Timetable/>
     </div>
   );
